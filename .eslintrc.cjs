@@ -9,22 +9,28 @@ module.exports = {
     'plugin:react-hooks/recommended',
     'plugin:import/recommended',
     'plugin:jsx-a11y/recommended',
-    'plugin:@typescript-eslint/recommended',
     'eslint-config-prettier',
+    'plugin:tailwindcss/recommended',
   ],
-  parserOptions: { ecmaVersion: 'latest', sourceType: 'module' },
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    ecmaFeatures: {
+      jsx: true,
+    },
+  },
   settings: {
-    react: { version: 'detect' },
+    react: { version: '18.2' },
     import: {
       resolver: {
         node: {
           paths: ['src'],
-          extensions: ['.js', '.jsx', '.ts', '.tsx'],
+          extensions: ['.js', '.jsx'],
         },
       },
     },
   },
-  plugins: ['react-refresh'],
+  plugins: ['react-refresh', 'tailwindcss'],
   rules: {
     'no-unused-vars': [
       'error',
