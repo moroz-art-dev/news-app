@@ -21,12 +21,10 @@ module.exports = {
   },
   settings: {
     react: { version: '18.2' },
-    import: {
-      resolver: {
-        node: {
-          paths: ['src'],
-          extensions: ['.js', '.jsx'],
-        },
+    'import/resolver': {
+      node: {
+        paths: ['src'],
+        extensions: ['.js', '.jsx'],
       },
     },
   },
