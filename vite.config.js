@@ -21,10 +21,11 @@ export default defineConfig({
     alias: {
       '@': path.resolve(__dirname, './src/'),
       components: `${path.resolve(__dirname, './src/components/')}`,
-      public: `${path.resolve(__dirname, './public/')}`,
       pages: path.resolve(__dirname, './src/pages'),
-      types: `${path.resolve(__dirname, './src/@types')}`,
+      public: `${path.resolve(__dirname, './public/')}`,
+      services: `${path.resolve(__dirname, './src/services/')}`,
       stores: `${path.resolve(__dirname, './src/stores/')}`,
+      types: `${path.resolve(__dirname, './src/@types')}`,
     },
   },
 });

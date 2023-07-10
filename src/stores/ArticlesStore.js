@@ -1,9 +1,9 @@
 import { observable, runInAction, makeAutoObservable } from 'mobx';
+import { fetchArticles } from 'services/articlesService';
 import {
   countryOptions,
   categoryOptions,
   sortByOptions,
-  typeNewsOptions,
   defaultOptions,
   everythingDefaultOptions,
   topHeadlinesDefaultOptions,
@@ -14,48 +14,44 @@ class ArticlesStore {
   loading = observable(false);
   error = observable(null);
 
-  typeNewsOptions = typeNewsOptions;
   countryOptions = countryOptions;
   categoryOptions = categoryOptions;
   sortByOptions = sortByOptions;
 
-  everythingOptions = observable({
+  everythingOptions = {
     ...defaultOptions,
     ...everythingDefaultOptions,
-  });
+  };
 
-  topHeadlinesOptions = observable({
+  topHeadlinesOptions = {
     ...defaultOptions,
     ...topHeadlinesDefaultOptions,
-  });
+  };
+
+  everythingCache = observable.map();
+  topHeadlinesCache = observable.map();
 
   constructor() {
     makeAutoObservable(this);
   }
 
-  fetchEverything = async () => {
+  fetchArticles = async (options, cache) => {
+    if (cache.has(JSON.stringify(options))) {
+      this.articles.replace(cache.get(JSON.stringify(options)));
+      return;
+    }
+
     this.loading = true;
 
     try {
-      const { url, ...params } = this.everythingOptions;
+      const { url, ...params } = options;
       params.sources = params.sources.join(',');
 
-      console.log(`${url}?${new URLSearchParams(params)}`);
-
-      const response = await fetch(`${url}?${new URLSearchParams(params)}`);
-
-      if (!response.ok) {
-        throw new Error('Request failed');
-      }
-
-      const data = await response.json();
-
-      if (data.status === 'error') {
-        throw new Error(data.message);
-      }
+      const articles = await fetchArticles(url, params);
 
       runInAction(() => {
-        this.articles.replace(data.articles);
+        this.articles.replace(articles);
+        cache.set(JSON.stringify(options), articles);
         this.loading = false;
         this.error = null;
       });
@@ -68,37 +64,26 @@ class ArticlesStore {
     }
   };
 
+  fetchEverything = async () => {
+    await this.fetchArticles(this.everythingOptions, this.everythingCache);
+  };
+
   fetchTopHeadlines = async () => {
-    this.loading = true;
+    await this.fetchArticles(this.topHeadlinesOptions, this.topHeadlinesCache);
+  };
 
-    try {
-      const { url, ...params } = this.topHeadlinesOptions;
-      params.sources = params.sources.join(',');
+  clearCache = (cache) => {
+    cache.clear();
+  };
 
-      const response = await fetch(`${url}?${new URLSearchParams(params)}`);
+  updateEverythingOptions = (options) => {
+    this.everythingOptions = { ...this.everythingOptions, ...options };
+    this.clearCache(this.everythingCache);
+  };
 
-      if (!response.ok) {
-        throw new Error('Request failed');
-      }
-
-      const data = await response.json();
-
-      if (data.status === 'error') {
-        throw new Error(data.message);
-      }
-
-      runInAction(() => {
-        this.articles.replace(data.articles);
-        this.loading = false;
-        this.error = null;
-      });
-    } catch (error) {
-      runInAction(() => {
-        this.articles.replace([]);
-        this.loading = false;
-        this.error = error.message;
-      });
-    }
+  updateTopHeadlinesOptions = (options) => {
+    this.topHeadlinesOptions = { ...this.topHeadlinesOptions, ...options };
+    this.clearCache(this.topHeadlinesCache);
   };
 }
 

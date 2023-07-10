@@ -59,8 +59,6 @@ export const categoryOptions = ['business', 'entertainment', 'general', 'health'
 
 export const sortByOptions = ['relevancy', 'popularity', 'publishedAt'];
 
-export const typeNewsOptions = ['everything', 'top-headlines'];
-
 export const defaultOptions = {
   apiKey: import.meta.env.VITE_API_KEY,
   //apiKey: '3035d923e07148e09e8f54d3a92640ab',
