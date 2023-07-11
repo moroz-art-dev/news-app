@@ -5,7 +5,7 @@ import withArticlesData from 'components/withArticlesData';
 
 export const TopArticlesBar = ({ articles }) => {
   return (
-    <aside className="ml-4 w-1/4">
+    <aside className="ml-4 sm:w-1/2 md:w-1/3 lg:w-1/4">
       {articles.map((article, index) => (
         <ArticleLiteCard key={index} article={article} />
       ))}
@@ -31,4 +31,8 @@ TopArticlesBar.propTypes = {
   ).isRequired,
 };
 
-export const TopArticlesBarWithData = withArticlesData(TopArticlesBar, articlesStore.fetchTopHeadlines);
+export const TopArticlesBarWithData = withArticlesData(
+  TopArticlesBar,
+  articlesStore.fetchTopHeadlines,
+  articlesStore.topHeadlines,
+);

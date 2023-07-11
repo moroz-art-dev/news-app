@@ -61,28 +61,27 @@ export const sortByOptions = ['relevancy', 'popularity', 'publishedAt'];
 
 export const defaultOptions = {
   apiKey: import.meta.env.VITE_API_KEY,
-  //apiKey: '3035d923e07148e09e8f54d3a92640ab',
-  q: '',
-  searchIn: 'all',
   sources: [],
-  domains: '',
-  excludeDomains: '',
-  language: '',
-  pageSize: 100,
   page: 1,
 };
 
 export const everythingDefaultOptions = {
   url: 'https://newsapi.org/v2/everything',
+  q: 'apple',
+  searchIn: 'title,description,content',
+  domains: '',
+  excludeDomains: '',
+  from: '',
+  to: '',
+  language: 'en',
   sortBy: 'relevancy',
+  pageSize: 15,
 };
 
 export const topHeadlinesDefaultOptions = {
   url: 'https://newsapi.org/v2/top-headlines',
   country: 'us',
   category: '',
-  sources: [],
+  pageSize: 7,
   q: '',
-  pageSize: 20,
-  page: 1,
 };

@@ -3,9 +3,6 @@ import PropTypes from 'prop-types';
 const ArticleLiteCard = ({ article }) => {
   return (
     <div className="mb-4 rounded-lg bg-white p-4 shadow-md">
-      {article.urlToImage && (
-        <img src={article.urlToImage} alt={article.title} className="mb-4 h-40 w-full object-cover" />
-      )}
       <h2 className="mb-2 text-xl font-bold">{article.title}</h2>
       {article.description && <p className="mb-4 text-gray-500">{article.description}</p>}
       <div className="flex justify-between">
@@ -18,7 +15,6 @@ const ArticleLiteCard = ({ article }) => {
 
 ArticleLiteCard.propTypes = {
   article: PropTypes.shape({
-    urlToImage: PropTypes.string,
     title: PropTypes.string.isRequired,
     description: PropTypes.string,
     source: PropTypes.shape({

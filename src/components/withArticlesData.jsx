@@ -1,24 +1,23 @@
 import { useEffect } from 'react';
 import { observer } from 'mobx-react-lite';
-import articlesStore from 'stores/ArticlesStore';
 import Error from 'components/Error';
 import Loading from 'components/Loading';
 
-const withArticlesData = (WrappedComponent, fetchData) => {
+const withArticlesData = (WrappedComponent, fetchData, articlesStoreProp) => {
   const WithArticlesData = observer(() => {
     useEffect(() => {
       fetchData();
     }, []);
 
-    if (articlesStore.loading) {
+    if (articlesStoreProp.loading.get()) {
       return <Loading />;
     }
 
-    if (articlesStore.error) {
-      return <Error message={articlesStore.error} />;
+    if (articlesStoreProp.error.get()) {
+      return <Error message={articlesStoreProp.error.get()} />;
     }
 
-    return <WrappedComponent articles={articlesStore.articles} />;
+    return <WrappedComponent articles={articlesStoreProp.articles} />;
   });
 
   return WithArticlesData;

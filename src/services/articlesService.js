@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-export const fetchArticles = async (url, params) => {
+export const fetchArticlesData = async (url, params) => {
   try {
     const response = await axios.get(url, { params });
 

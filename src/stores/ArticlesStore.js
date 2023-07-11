@@ -1,5 +1,5 @@
 import { observable, runInAction, makeAutoObservable } from 'mobx';
-import { fetchArticles } from 'services/articlesService';
+import { fetchArticlesData } from 'services/articlesService';
 import {
   countryOptions,
   categoryOptions,
@@ -10,66 +10,73 @@ import {
 } from 'stores/options';
 
 class ArticlesStore {
-  articles = observable([]);
-  loading = observable(false);
-  error = observable(null);
+  everything = {
+    articles: observable([]),
+    loading: observable(false),
+    error: observable(null),
+    options: {
+      ...defaultOptions,
+      ...everythingDefaultOptions,
+    },
+    cache: observable.map(),
+  };
+
+  topHeadlines = {
+    articles: observable([]),
+    loading: observable(false),
+    error: observable(null),
+    options: {
+      ...defaultOptions,
+      ...topHeadlinesDefaultOptions,
+    },
+    cache: observable.map(),
+  };
 
   countryOptions = countryOptions;
   categoryOptions = categoryOptions;
   sortByOptions = sortByOptions;
 
-  everythingOptions = {
-    ...defaultOptions,
-    ...everythingDefaultOptions,
-  };
-
-  topHeadlinesOptions = {
-    ...defaultOptions,
-    ...topHeadlinesDefaultOptions,
-  };
-
-  everythingCache = observable.map();
-  topHeadlinesCache = observable.map();
-
   constructor() {
     makeAutoObservable(this);
   }
 
-  fetchArticles = async (options, cache) => {
+  fetchArticles = async (target, loading, error) => {
+    const { options, cache } = target;
+
     if (cache.has(JSON.stringify(options))) {
-      this.articles.replace(cache.get(JSON.stringify(options)));
+      target.articles.replace(cache.get(JSON.stringify(options)));
       return;
     }
 
-    this.loading = true;
+    loading.set(true);
 
     try {
       const { url, ...params } = options;
       params.sources = params.sources.join(',');
 
-      const articles = await fetchArticles(url, params);
+      const articles = await fetchArticlesData(url, params);
 
       runInAction(() => {
-        this.articles.replace(articles);
+        target.articles.replace(articles);
         cache.set(JSON.stringify(options), articles);
-        this.loading = false;
-        this.error = null;
+        loading.set(false);
+        error.set(null);
       });
-    } catch (error) {
+    } catch (err) {
       runInAction(() => {
-        this.articles.replace([]);
-        this.loading = false;
-        this.error = error.message;
+        target.articles.replace([]);
+        loading.set(false);
+        error.set(err.message);
       });
     }
   };
 
   fetchEverything = async () => {
-    await this.fetchArticles(this.everythingOptions, this.everythingCache);
+    await this.fetchArticles(this.everything, this.everything.loading, this.everything.error);
   };
 
   fetchTopHeadlines = async () => {
-    await this.fetchArticles(this.topHeadlinesOptions, this.topHeadlinesCache);
+    await this.fetchArticles(this.topHeadlines, this.topHeadlines.loading, this.topHeadlines.error);
   };
 
   clearCache = (cache) => {
@@ -77,13 +84,13 @@ class ArticlesStore {
   };
 
   updateEverythingOptions = (options) => {
-    this.everythingOptions = { ...this.everythingOptions, ...options };
-    this.clearCache(this.everythingCache);
+    this.everything.options = { ...this.everything.options, ...options };
+    this.clearCache(this.everything.cache);
   };
 
   updateTopHeadlinesOptions = (options) => {
-    this.topHeadlinesOptions = { ...this.topHeadlinesOptions, ...options };
-    this.clearCache(this.topHeadlinesCache);
+    this.topHeadlines.options = { ...this.topHeadlines.options, ...options };
+    this.clearCache(this.topHeadlines.cache);
   };
 }
 
