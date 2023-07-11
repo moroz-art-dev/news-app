@@ -11,7 +11,7 @@ const App = observer(() => {
     <div className="flex min-h-screen flex-col">
       <Header />
       <main className="grow bg-gray-100">
-        <div className="container mx-auto flex">
+        <div className="container mx-auto flex w-full justify-between">
           <ArticlesGridWithData />
           <TopArticlesBarWithData />
         </div>
