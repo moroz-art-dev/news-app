@@ -1,4 +1,4 @@
-import { observable, runInAction, makeAutoObservable } from 'mobx';
+import { observable, makeObservable, action, runInAction } from 'mobx';
 import { fetchArticlesData } from 'services/articlesService';
 import {
   countryOptions,
@@ -10,6 +10,8 @@ import {
 } from 'stores/options';
 
 class ArticlesStore {
+  settingsVisible = false;
+
   everything = {
     articles: observable([]),
     loading: observable(false),
@@ -37,7 +39,18 @@ class ArticlesStore {
   sortByOptions = sortByOptions;
 
   constructor() {
-    makeAutoObservable(this);
+    makeObservable(this, {
+      settingsVisible: observable,
+      everything: observable,
+      topHeadlines: observable,
+      fetchArticles: action,
+      fetchEverything: action,
+      fetchTopHeadlines: action,
+      clearCache: action,
+      updateEverythingOptions: action,
+      updateTopHeadlinesOptions: action,
+      toggleSettings: action,
+    });
   }
 
   fetchArticles = async (target, loading, error) => {
@@ -91,6 +104,10 @@ class ArticlesStore {
   updateTopHeadlinesOptions = (options) => {
     this.topHeadlines.options = { ...this.topHeadlines.options, ...options };
     this.clearCache(this.topHeadlines.cache);
+  };
+
+  toggleSettings = () => {
+    this.settingsVisible = !this.settingsVisible;
   };
 }
 
