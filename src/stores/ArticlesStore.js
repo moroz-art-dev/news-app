@@ -1,13 +1,6 @@
 import { observable, makeObservable, action, runInAction } from 'mobx';
 import { fetchArticlesData } from 'services/articlesService';
-import {
-  countryOptions,
-  categoryOptions,
-  sortByOptions,
-  defaultOptions,
-  everythingDefaultOptions,
-  topHeadlinesDefaultOptions,
-} from 'stores/options';
+import { defaultOptions, everythingDefaultOptions, topHeadlinesDefaultOptions } from 'stores/options';
 
 class ArticlesStore {
   settingsVisible = false;
@@ -33,10 +26,6 @@ class ArticlesStore {
     },
     cache: observable.map(),
   };
-
-  countryOptions = countryOptions;
-  categoryOptions = categoryOptions;
-  sortByOptions = sortByOptions;
 
   constructor() {
     makeObservable(this, {
@@ -99,15 +88,36 @@ class ArticlesStore {
   updateEverythingOptions = (options) => {
     this.everything.options = { ...this.everything.options, ...options };
     this.clearCache(this.everything.cache);
+    this.fetchEverything();
   };
 
   updateTopHeadlinesOptions = (options) => {
     this.topHeadlines.options = { ...this.topHeadlines.options, ...options };
     this.clearCache(this.topHeadlines.cache);
+    this.fetchTopHeadlines();
   };
 
   toggleSettings = () => {
     this.settingsVisible = !this.settingsVisible;
+  };
+
+  updateOptions = (targetKey, newOptions) => {
+    const target = this[targetKey];
+
+    if (!target) {
+      throw new Error(`Invalid target: ${targetKey}`);
+    }
+
+    const { options, cache } = target;
+
+    target.options = { ...options, ...newOptions };
+
+    this.clearCache(cache);
+
+    const fetchMethod = `fetch${targetKey.charAt(0).toUpperCase()}${targetKey.slice(1)}`;
+    if (typeof this[fetchMethod] === 'function') {
+      this[fetchMethod]();
+    }
   };
 }
 

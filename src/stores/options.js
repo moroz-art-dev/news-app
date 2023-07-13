@@ -55,9 +55,15 @@ export const countryOptions = [
   'za',
 ];
 
+export const languageOptions = ['ar', 'de', 'en', 'es', 'fr', 'he', 'it', 'nl', 'no', 'pt', 'ru', 'se', 'ud', 'zh'];
+
 export const categoryOptions = ['business', 'entertainment', 'general', 'health', 'science', 'sports', 'technology'];
 
 export const sortByOptions = ['relevancy', 'popularity', 'publishedAt'];
+
+export const searchIn = ['title', 'description', 'content'];
+
+export const pageSizeOptions = ['7', '15', '20', '50', '100'];
 
 export const defaultOptions = {
   apiKey: import.meta.env.VITE_API_KEY,
@@ -68,20 +74,35 @@ export const defaultOptions = {
 export const everythingDefaultOptions = {
   url: 'https://newsapi.org/v2/everything',
   q: 'apple',
-  searchIn: 'title,description,content',
+  searchIn: 'content',
   domains: '',
   excludeDomains: '',
   from: '',
   to: '',
   language: 'en',
   sortBy: 'relevancy',
-  pageSize: 15,
+  pageSize: '15',
 };
 
 export const topHeadlinesDefaultOptions = {
   url: 'https://newsapi.org/v2/top-headlines',
   country: 'us',
   category: '',
-  pageSize: 7,
+  pageSize: '7',
   q: '',
+};
+
+export const formTypeSettings = {
+  q: { type: 'text' },
+  searchIn: { type: 'select', options: searchIn, multiple: true, result: 'text'  },
+  sources: { type: 'text' },
+  domains: { type: 'text' },
+  excludeDomains: { type: 'text' },
+  from: { type: 'date' },
+  to: { type: 'date' },
+  language: { type: 'select', options: languageOptions, multiple: false },
+  sortBy: { type: 'select', options: sortByOptions, multiple: false },
+  pageSize: { type: 'select', options: pageSizeOptions, multiple: false },
+  country: { type: 'select', options: countryOptions, multiple: false },
+  category: { type: 'select', options: categoryOptions, multiple: false },
 };

@@ -1,4 +1,3 @@
-import { observer } from 'mobx-react-lite';
 import Header from 'components/Header';
 import { ArticlesGridWithData } from 'components/ArticlesGrid';
 import { TopArticlesBarWithData } from 'components/TopArticlesBar';
@@ -6,7 +5,7 @@ import Footer from 'components/Footer';
 
 import './App.css';
 
-const App = observer(() => {
+const App = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <Header />
@@ -19,6 +18,6 @@ const App = observer(() => {
       <Footer />
     </div>
   );
-});
+};
 
 export default App;

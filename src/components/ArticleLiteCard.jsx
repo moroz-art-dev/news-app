@@ -1,10 +1,11 @@
 import PropTypes from 'prop-types';
+import ReactHtmlParser from 'react-html-parser';
 
 const ArticleLiteCard = ({ article }) => {
   return (
     <div className="mb-4 rounded-lg bg-white p-4 shadow-md">
       <h2 className="mb-2 text-xl font-bold">{article.title}</h2>
-      {article.description && <p className="mb-4 text-gray-500">{article.description}</p>}
+      {article.description && <p className="mb-4 text-gray-500">{ReactHtmlParser(article.description)}</p>}
       <div className="flex justify-between">
         {article.source && <span className="text-sm text-gray-400">{article.source.name}</span>}
         {article.publishedAt && <span className="text-sm text-gray-400">{article.publishedAt}</span>}

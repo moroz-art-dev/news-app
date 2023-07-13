@@ -1,5 +1,5 @@
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCog } from '@fortawesome/free-solid-svg-icons';
+import { faCog, faTimes } from '@fortawesome/free-solid-svg-icons';
 import { observer } from 'mobx-react-lite';
 import articlesStore from 'stores/ArticlesStore';
 import SettingsComponent from 'components/SettingsComponent';
@@ -14,7 +14,7 @@ const Header = observer(() => {
       <div className="container mx-auto flex items-center justify-between text-white">
         <div className="flex items-center">
           <span className="mr-2">ARTICLES</span>
-          <FontAwesomeIcon icon={faCog} onClick={handleSettingsClick} style={{ cursor: 'pointer' }} />
+          <FontAwesomeIcon icon={articlesStore.settingsVisible ? faTimes : faCog} onClick={handleSettingsClick} style={{ cursor: 'pointer' }} />
         </div>
       </div>
       {articlesStore.settingsVisible && <SettingsComponent />}
