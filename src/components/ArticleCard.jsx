@@ -8,7 +8,7 @@ const ArticleCard = ({ article }) => {
         <img src={article.urlToImage} alt={article.title} className="mb-4 h-40 w-full object-cover" />
       )}
       <h2 className="mb-2 text-xl font-bold">{article.title}</h2>
-      {article.description && <p className="mb-4 text-gray-500">{ReactHtmlParser(article.description)}</p>}
+      {article.description && <div className="mb-4 text-gray-500">{ReactHtmlParser(article.description)}</div>}
       <div className="flex justify-between">
         {article.source && <span className="text-sm text-gray-400">{article.source.name}</span>}
         {article.publishedAt && <span className="text-sm text-gray-400">{article.publishedAt}</span>}
