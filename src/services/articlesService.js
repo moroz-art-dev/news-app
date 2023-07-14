@@ -2,7 +2,11 @@ import axios from 'axios';
 
 export const fetchArticlesData = async (url, params) => {
   try {
-    const response = await axios.get(url, { params });
+    const filteredParams = Object.fromEntries(
+      Object.entries(params).filter(([_key, value]) => value !== undefined && value !== ''),
+    );
+
+    const response = await axios.get(url, { params: filteredParams });
 
     if (response.status !== 200) {
       throw new Error('Request failed');
