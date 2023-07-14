@@ -95,7 +95,7 @@ export const topHeadlinesDefaultOptions = {
 export const formTypeSettings = {
   q: { type: 'text' },
   searchIn: { type: 'select', options: searchIn, multiple: true, result: 'text'  },
-  sources: { type: 'text' },
+  sources: { type: 'text', result: 'array'  },
   domains: { type: 'text' },
   excludeDomains: { type: 'text' },
   from: { type: 'date' },

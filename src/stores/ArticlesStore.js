@@ -86,7 +86,9 @@ class ArticlesStore {
   };
 
   updateEverythingOptions = (options) => {
+    console.log('options',options)
     this.everything.options = { ...this.everything.options, ...options };
+    console.log(this.everything.options)
     this.clearCache(this.everything.cache);
     this.fetchEverything();
   };
