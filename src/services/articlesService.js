@@ -1,25 +1,26 @@
-import axios from 'axios';
-
-export const fetchArticlesData = async (url, params) => {
+export const fetchArticlesData = async (url, _params) => {
   try {
-    const filteredParams = Object.fromEntries(
-      Object.entries(params).filter(([_key, value]) => value !== undefined && value !== ''),
-    );
+    const response = await fetch(`/demo/${getUrlType(url)}.json`);
 
-    const response = await axios.get(url, { params: filteredParams });
 
-    if (response.status !== 200) {
+    if (!response.ok) {
       throw new Error('Request failed');
     }
 
-    const data = response.data;
+    const data = await response.json();
 
-    if (data.status === 'error') {
-      throw new Error(data.message);
-    }
-
-    return data.articles;
+    return data;
   } catch (error) {
     throw new Error(error.message);
+  }
+};
+
+const getUrlType = (url) => {
+  if (url === 'https://newsapi.org/v2/everything') {
+    return 'everything';
+  } else if (url === 'https://newsapi.org/v2/top-headlines') {
+    return 'topHeadlines';
+  } else {
+    throw new Error('Invalid URL');
   }
 };
