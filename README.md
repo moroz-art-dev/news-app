@@ -62,12 +62,6 @@ You can also check out the live demo of this app at [news-app-eight-amber.vercel
 
 This project uses the [newsapi.org](https://newsapi.org/) API to fetch news data. Make sure you have an API key from newsapi.org and set it in the `.env` file as mentioned in the installation steps.
 
-## Screenshots
-
-![Image 1](screenshots/screenshot_1.png)
-![Image 2](screenshots/screenshot_2.png)
-![Image 3](screenshots/screenshot_3.png)
-
 ## License
 
 This project is licensed under the [MIT License](LICENSE).
